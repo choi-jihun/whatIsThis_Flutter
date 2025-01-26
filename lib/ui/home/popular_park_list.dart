@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whatisthis/model/popular_park.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 import 'package:whatisthis/ui/home/popular_park_card.dart';
+import 'package:whatisthis/ui/parkinfo/park_info.dart';
 
 class PopularParkList extends StatelessWidget {
   PopularParkList({super.key});
@@ -64,6 +65,11 @@ class PopularParkList extends StatelessWidget {
                       parkName: dummyParks[index].parkName,
                       parkDes: dummyParks[index].parkDes,
                       imageUrl: dummyParks[index].imageUrl,
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ParkInfo(parkId: dummyParks[index].parkId))),
                     ),
                   );
                 })),
