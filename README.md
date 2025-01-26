@@ -1,16 +1,12 @@
-# whatisthis
+# 🌿 이게모야
 
-A new Flutter project.
+<img src="./logo.jpeg" alt="Logo" width="400" height="400"/>
+  
+## 1. 프로젝트 소개 및 핵심 기능 🌳🔍
 
-## Getting Started
+**생태공원 탐험학습 도우미**  
+자연 탐험과 학습을 돕기 위한 게이미피케이션 기반의 AR/AI 동식물 탐험 애플리케이션입니다.
 
-This project is a starting point for a Flutter application.
+기존 Kotlin으로 만들어진 Application을 Flutter를 통해 개발 중 입니다.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **기존 프로젝트 설명**: [여기를 클릭!](https://github.com/choi-jihun/WhatIsThis/blob/master/README.md)
