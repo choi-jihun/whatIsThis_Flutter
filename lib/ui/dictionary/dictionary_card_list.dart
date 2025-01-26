@@ -1,47 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:whatisthis/model/dictionary.dart';
+import 'package:whatisthis/cosntants/dummy_dictionary.dart';
 import 'package:whatisthis/ui/dictionary_card.dart';
 
 class DictionaryCardList extends StatelessWidget {
-  DictionaryCardList({super.key});
-
-  final List<Dictionary> dummyDics = [
-    Dictionary(
-      dicId: 1,
-      dicName: '서울숲',
-      isDiscover: true,
-      imageUrl:
-          'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-    ),
-    Dictionary(
-      dicId: 2,
-      dicName: 'heart',
-      isDiscover: false,
-      imageUrl:
-          'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-    ),
-    Dictionary(
-      dicId: 3,
-      dicName: '히히히',
-      isDiscover: true,
-      imageUrl:
-          'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-    ),
-    Dictionary(
-      dicId: 4,
-      dicName: '뭘까요',
-      isDiscover: true,
-      imageUrl:
-          'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-    ),
-    Dictionary(
-      dicId: 5,
-      dicName: '능소화',
-      isDiscover: false,
-      imageUrl:
-          'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-    ),
-  ];
+  final int? parkId;
+  const DictionaryCardList({super.key, this.parkId});
 
   @override
   Widget build(BuildContext context) {
