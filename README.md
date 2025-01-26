@@ -1,6 +1,4 @@
 # 🌿 이게모야
-
-<img src="./logo.jpeg" alt="Logo" width="400" height="400"/>
   
 ## 1. 프로젝트 소개 및 핵심 기능 🌳🔍
 
