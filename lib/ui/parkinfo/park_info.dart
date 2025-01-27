@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:whatisthis/cosntants/dummy_dictionary.dart';
 import 'package:whatisthis/cosntants/dummy_park_info.dart';
 import 'package:whatisthis/theme/app_theme.dart';
+import 'package:whatisthis/ui/dictionary/dictionary_info_page.dart';
 import 'package:whatisthis/ui/dictionary_card.dart';
+import 'package:whatisthis/ui/navermap/naver_map_page.dart';
 
 class ParkInfo extends StatelessWidget {
   final int parkId;
@@ -11,9 +14,9 @@ class ParkInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final parkInfo = dummyParkInfos.firstWhere((park) => park.parkId == parkId);
-    return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
+    return SafeArea(
+      child: Scaffold(
+        body: CustomScrollView(
           slivers: [
             SliverAppBar(
               expandedHeight: MediaQuery.of(context).size.height * 0.3,
@@ -71,17 +74,47 @@ class ParkInfo extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return DictionaryCard(
-                      dicId: parkInfo.dictionaries[index].dicId,
-                      imageUrl: parkInfo.dictionaries[index].imageUrl,
-                      name: parkInfo.dictionaries[index].dicName,
-                      isDiscover: parkInfo.dictionaries[index].isDiscover,
-                    );
+                        dictionary: parkInfo.dictionaries[index],
+                        onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DictionaryInfoPage(
+                                  dicId: dummyDics[index].dicId,
+                                ),
+                              ),
+                            ));
                   },
                   childCount: parkInfo.dictionaries.length,
                 ),
               ),
             ),
           ],
+        ),
+        bottomNavigationBar: SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton(
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NaverMapPage(),
+                )),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20), bottom: Radius.circular(0)),
+              ),
+            ),
+            child: Text(
+              '모험 시작하기',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ),
       ),
     );
