@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatisthis/cosntants/dummy_dictionary.dart';
+import 'package:whatisthis/ui/dictionary/dictionary_info_page.dart';
 import 'package:whatisthis/ui/dictionary_card.dart';
 
 class DictionaryCardList extends StatelessWidget {
@@ -14,10 +15,13 @@ class DictionaryCardList extends StatelessWidget {
       itemCount: dummyDics.length,
       itemBuilder: (context, index) {
         return DictionaryCard(
-          dicId: dummyDics[index].dicId,
-          imageUrl: dummyDics[index].imageUrl,
-          name: dummyDics[index].dicName,
-          isDiscover: dummyDics[index].isDiscover,
+          dictionary: dummyDics[index],
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DictionaryInfoPage(
+                        dicId: dummyDics[index].dicId,
+                      ))),
         );
       },
     );
