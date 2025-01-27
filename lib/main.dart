@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 import 'package:whatisthis/ui/mainScreen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  await NaverMapSdk.instance.initialize(clientId: dotenv.env['NAVER_MAP_KEY']);
   runApp(const MyApp());
 }
 
