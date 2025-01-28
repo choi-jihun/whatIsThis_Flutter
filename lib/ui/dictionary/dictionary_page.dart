@@ -3,7 +3,8 @@ import 'package:whatisthis/theme/app_theme.dart';
 import 'package:whatisthis/ui/dictionary/dictionary_card_list.dart';
 
 class DictionaryPage extends StatefulWidget {
-  const DictionaryPage({super.key});
+  final int? parkId;
+  const DictionaryPage({super.key, this.parkId});
 
   @override
   State<DictionaryPage> createState() => _DictionaryPageState();
@@ -126,7 +127,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12),
-                child: DictionaryCardList(),
+                child: DictionaryCardList(
+                  parkId: widget.parkId,
+                ),
               ),
             ),
           ],
