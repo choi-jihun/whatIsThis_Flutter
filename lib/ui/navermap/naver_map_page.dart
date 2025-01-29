@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:whatisthis/ui/camera/camera.dart';
 import 'package:whatisthis/ui/confirm_dialog.dart';
 import 'package:whatisthis/ui/dictionary/dictionary_page.dart';
 import 'package:whatisthis/ui/map_button.dart';
@@ -92,7 +93,13 @@ class NaverMapPage extends StatelessWidget {
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(16)),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Camera(),
+                          ));
+                    },
                     icon: const Icon(Icons.center_focus_weak),
                     iconSize: 42,
                   ),
