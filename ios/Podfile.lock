@@ -1,11 +1,23 @@
 PODS:
+  - camerawesome (0.0.1):
+    - Flutter
+    - JPSVolumeButtonHandler
   - Flutter (1.0.0)
   - flutter_naver_map (1.3.0):
     - Flutter
     - NMapsMap (= 3.19.0)
+  - JPSVolumeButtonHandler (1.0.5)
   - NMapsGeometry (1.0.2)
   - NMapsMap (3.19.0):
     - NMapsGeometry
+  - onnxruntime (0.0.1):
+    - Flutter
+    - onnxruntime-objc (= 1.15.1)
+  - onnxruntime-c (1.15.1)
+  - onnxruntime-objc (1.15.1):
+    - onnxruntime-objc/Core (= 1.15.1)
+  - onnxruntime-objc/Core (1.15.1):
+    - onnxruntime-c (= 1.15.1)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -16,22 +28,31 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - camerawesome (from `.symlinks/plugins/camerawesome/ios`)
   - Flutter (from `Flutter`)
   - flutter_naver_map (from `.symlinks/plugins/flutter_naver_map/ios`)
+  - onnxruntime (from `.symlinks/plugins/onnxruntime/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
 
 SPEC REPOS:
   trunk:
+    - JPSVolumeButtonHandler
     - NMapsGeometry
     - NMapsMap
+    - onnxruntime-c
+    - onnxruntime-objc
 
 EXTERNAL SOURCES:
+  camerawesome:
+    :path: ".symlinks/plugins/camerawesome/ios"
   Flutter:
     :path: Flutter
   flutter_naver_map:
     :path: ".symlinks/plugins/flutter_naver_map/ios"
+  onnxruntime:
+    :path: ".symlinks/plugins/onnxruntime/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
@@ -40,10 +61,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
 
 SPEC CHECKSUMS:
+  camerawesome: ae69de297ab1a69a0bcaeef8797d3045ed57172f
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_naver_map: b7ccf21ee350a34381ec92d0bfdad1e8714af9bc
+  JPSVolumeButtonHandler: 53110330c9168ed325def93eabff39f0fe3e8082
   NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
   NMapsMap: 99c10429d93340780b6f88d3fc7c0a3850b43664
+  onnxruntime: 2ab1957eb029c71d47f7bb35cc4efc9f0d297828
+  onnxruntime-c: ebdcfd8650bcbd10121c125262f99dea681b92a3
+  onnxruntime-objc: ae7acec7a3d03eaf072d340afed7a35635c1c2a6
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
