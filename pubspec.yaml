@@ -64,6 +64,8 @@ flutter:
     uses-material-design: true
     assets:
         - .env
+        - assets/train146.onnx
+        - assets/labels.txt
 
     # To add assets to your application, add an assets section, like this:
     # assets:
@@ -97,8 +99,6 @@ fonts:
     - family: sejong
       fonts:
           - asset: assets/fonts/SejongGeulggot.otf
-          - asset: assets/labels.txt
-          - asset: assets/train146.onnx
 
       # For details regarding fonts from package dependencies,
       # see https://flutter.dev/to/font-from-package
