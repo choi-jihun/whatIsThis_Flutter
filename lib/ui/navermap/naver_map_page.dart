@@ -7,15 +7,30 @@ import 'package:whatisthis/ui/dictionary/dictionary_page.dart';
 import 'package:whatisthis/ui/map_button.dart';
 import 'package:whatisthis/ui/mission_dialog.dart';
 
-class NaverMapPage extends StatelessWidget {
+class NaverMapPage extends StatefulWidget {
   const NaverMapPage({super.key});
 
-  Future<void> _checkPermission() async {
-    final status = await Permission.location.request();
-    if (status.isGranted) {
-      print("위치 권한 허용됨");
-    } else if (status.isDenied) {
-      print("위치 권한 거부됨");
+  @override
+  State<NaverMapPage> createState() => _NaverMapPageState();
+}
+
+class _NaverMapPageState extends State<NaverMapPage> {
+  Future<void> _permission() async {
+    try {
+      var status = await Permission.locationWhenInUse.status;
+      print('Current location status: $status');
+
+      if (status.isDenied) {
+        status = await Permission.locationWhenInUse.request();
+        print('Location permission result: $status');
+
+        if (status.isDenied || status.isPermanentlyDenied) {
+          openAppSettings();
+          return;
+        }
+      }
+    } catch (e) {
+      print('Permission error: $e');
     }
   }
 
@@ -26,9 +41,11 @@ class NaverMapPage extends StatelessWidget {
         body: Stack(
           children: [
             NaverMap(
-              options: const NaverMapViewOptions(locationButtonEnable: true),
+              options: NaverMapViewOptions(
+                locationButtonEnable: true,
+              ),
               onMapReady: (controller) async {
-                await _checkPermission();
+                await _permission();
                 controller
                     .setLocationTrackingMode(NLocationTrackingMode.follow);
               },
