@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whatisthis/di/auth_providers.dart';
+import 'package:whatisthis/di/providers.dart';
 import 'package:whatisthis/model/request/auth_request.dart';
 import 'package:whatisthis/repository/auth_repository.dart';
 import 'package:whatisthis/state/auth_state.dart';
