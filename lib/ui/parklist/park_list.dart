@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:whatisthis/cosntants/dummy_park.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatisthis/state/home_state.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 import 'package:whatisthis/ui/park_card.dart';
 import 'package:whatisthis/ui/parkinfo/park_info.dart';
+import 'package:whatisthis/viewmodel/home_view_model.dart';
 
-class ParkList extends StatelessWidget {
+class ParkList extends ConsumerWidget {
   const ParkList({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final homeState = ref.watch(homeViewModelProvider);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -21,22 +25,28 @@ class ParkList extends StatelessWidget {
         ),
         elevation: 8,
       ),
-      body: ListView.separated(
-        padding: EdgeInsets.all(12),
-        shrinkWrap: true,
-        itemCount: dummyParks.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 12),
-        itemBuilder: (context, index) {
-          return ParkCard(
-            park: dummyParks[index],
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ParkInfo(parkId: dummyParks[index].parkId))),
-          );
-        },
-      ),
+      body: switch (homeState) {
+        HomeInitial() ||
+        HomeLoading() =>
+          const Center(child: CircularProgressIndicator()),
+        HomeError(message: var message) => Center(child: Text(message)),
+        HomeSuccess(nearbyParks: var parks) => ListView.separated(
+            padding: const EdgeInsets.all(12),
+            shrinkWrap: true,
+            itemCount: parks.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              return ParkCard(
+                park: parks[index],
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ParkInfo(parkId: parks[index].id))),
+              );
+            },
+          ),
+      },
     );
   }
 }

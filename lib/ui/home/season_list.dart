@@ -1,38 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:whatisthis/model/season_item.dart';
+import 'package:whatisthis/model/species.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 import 'package:whatisthis/ui/circle_image_with_text.dart';
 
 class SeasonList extends StatelessWidget {
-  SeasonList({super.key});
+  final List<Species> species;
 
-  final List<SeasonItem> dummyItems = [
-    SeasonItem(
-        itemId: 1,
-        imageUrl:
-            'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-        itemName: "수선화"),
-    SeasonItem(
-        itemId: 2,
-        imageUrl:
-            'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-        itemName: "능소화"),
-    SeasonItem(
-        itemId: 3,
-        imageUrl:
-            'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-        itemName: "무엇?"),
-    SeasonItem(
-        itemId: 4,
-        imageUrl:
-            'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-        itemName: "무슨꽃"),
-    SeasonItem(
-        itemId: 5,
-        imageUrl:
-            'https://i.namu.wiki/i/TYxKQDnuwFOcxdSaPR-L81SPQGf5aPEz13tINJ-Z508LKNtGmRmkZTKKEN82SrIZAYoLL8WSbXGzv2PiLgpRSg.webp',
-        itemName: "다람쥐"),
-  ];
+  const SeasonList({super.key, required this.species});
 
   @override
   Widget build(BuildContext context) {
@@ -46,18 +20,20 @@ class SeasonList extends StatelessWidget {
         SizedBox(
           height: 220,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: dummyItems.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: CircleImageWithText(
-                      itemId: dummyItems[index].itemId,
-                      imageUrl: dummyItems[index].imageUrl,
-                      name: dummyItems[index].itemName),
-                );
-              }),
-        )
+            scrollDirection: Axis.horizontal,
+            itemCount: species.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: CircleImageWithText(
+                  itemId: species[index].id,
+                  imageUrl: species[index].imageUrl ?? '',
+                  name: species[index].name,
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
