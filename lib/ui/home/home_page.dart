@@ -1,18 +1,51 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatisthis/state/home_state.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 import 'package:whatisthis/ui/home/near_park_list.dart';
 import 'package:whatisthis/ui/home/popular_park_list.dart';
 import 'package:whatisthis/ui/home/season_list.dart';
+import 'package:whatisthis/viewmodel/home_view_model.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(homeViewModelProvider.notifier).loadHomeData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final homeState = ref.watch(homeViewModelProvider);
+
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
+        child: _buildContent(homeState),
+      ),
+    );
+  }
+
+  Widget _buildContent(HomeState state) {
+    return switch (state) {
+      HomeInitial() => const Center(child: CircularProgressIndicator()),
+      HomeLoading() => const Center(child: CircularProgressIndicator()),
+      HomeError(message: var message) => Center(child: Text(message)),
+      HomeSuccess(
+        popularParks: var popularParks,
+        nearbyParks: var nearbyParks,
+        seasonalSpecies: var seasonalSpecies,
+      ) =>
+        CustomScrollView(
           slivers: [
             SliverAppBar(
               expandedHeight: MediaQuery.of(context).size.height * 0.2,
@@ -43,8 +76,8 @@ class HomePage extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: PopularParkList(),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: PopularParkList(parks: popularParks),
                   ),
                   SizedBox(
                     height: 8,
@@ -52,8 +85,8 @@ class HomePage extends StatelessWidget {
                     child: ColoredBox(color: Colors.grey.shade300),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: NearParkList(),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: NearParkList(parks: nearbyParks),
                   ),
                   SizedBox(
                     height: 8,
@@ -61,15 +94,14 @@ class HomePage extends StatelessWidget {
                     child: ColoredBox(color: Colors.grey.shade300),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: SeasonList(),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: SeasonList(species: seasonalSpecies),
                   ),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
+    };
   }
 }
