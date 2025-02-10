@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 
 class CircleImageWithText extends StatelessWidget {
-  final int itemId;
+  final String itemId;
   final String imageUrl;
   final String name;
 

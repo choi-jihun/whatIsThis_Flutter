@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 
 class PopularParkCard extends StatelessWidget {
-  final int parkId;
+  final String parkId;
   final String imageUrl;
   final String parkName;
   final String parkDes;

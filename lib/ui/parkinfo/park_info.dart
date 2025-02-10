@@ -7,7 +7,7 @@ import 'package:whatisthis/ui/dictionary_card.dart';
 import 'package:whatisthis/ui/navermap/naver_map_page.dart';
 
 class ParkInfo extends StatelessWidget {
-  final int parkId;
+  final String parkId;
 
   const ParkInfo({super.key, required this.parkId});
 
