@@ -1,4 +1,4 @@
-String formatDistance(int distance) {
+String formatDistance(double distance) {
   if (distance >= 1000) {
     return '${(distance / 1000).toStringAsFixed(2)}km';
   } else {

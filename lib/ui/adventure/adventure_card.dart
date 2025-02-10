@@ -82,7 +82,7 @@ class AdventureCard extends StatelessWidget {
                                         .lightTheme.textTheme.bodyMedium
                                         ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(formatDistance(distance)),
+                                  Text(formatDistance(distance.toDouble())),
                                   SizedBox(height: 12),
                                   Text(
                                     '소요시간',
