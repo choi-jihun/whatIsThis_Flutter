@@ -31,4 +31,55 @@ class SpeciesRepositoryImpl implements SpeciesRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<List<Species>> getAllSpecies() async {
+    try {
+      print('Requesting all species');
+      final response =
+          await _supabaseClient.from('species').select('*').order('name');
+
+      print('All Species Response: $response');
+      return response.map((json) => Species.fromJson(json)).toList();
+    } catch (e) {
+      print('Error getting all species: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Species>> getDiscoveredSpecies(String userId) async {
+    try {
+      print('Requesting discovered species for user: $userId');
+      final response = await _supabaseClient
+          .from('species')
+          .select('*, discoveries!inner(*)')
+          .eq('discoveries.user_id', userId)
+          .order('name');
+
+      print('Discovered Species Response: $response');
+      return response.map((json) => Species.fromJson(json)).toList();
+    } catch (e) {
+      print('Error getting discovered species: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Species>> getUndiscoveredSpecies(String userId) async {
+    try {
+      print('Requesting undiscovered species for user: $userId');
+      final response = await _supabaseClient
+          .from('species')
+          .select('*, discoveries(*)')
+          .not('discoveries', 'cs', '{"user_id": "$userId"}')
+          .order('name');
+
+      print('Undiscovered Species Response: $response');
+      return response.map((json) => Species.fromJson(json)).toList();
+    } catch (e) {
+      print('Error getting undiscovered species: $e');
+      rethrow;
+    }
+  }
 }
