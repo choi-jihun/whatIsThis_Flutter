@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatisthis/cosntants/dummy_dictionary.dart';
 import 'package:whatisthis/cosntants/dummy_park_info.dart';
+import 'package:whatisthis/model/species.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 import 'package:whatisthis/ui/dictionary/dictionary_info_page.dart';
 import 'package:whatisthis/ui/dictionary_card.dart';
@@ -73,13 +74,20 @@ class ParkInfo extends StatelessWidget {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
+                    final dictionary = parkInfo.dictionaries[index];
+                    final species = Species(
+                      id: dictionary.dicId.toString(),
+                      name: dictionary.dicName,
+                      imageUrl: dictionary.imageUrl,
+                      season: '',
+                    );
                     return DictionaryCard(
-                        dictionary: parkInfo.dictionaries[index],
+                        species: species,
                         onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DictionaryInfoPage(
-                                  dicId: dummyDics[index].dicId,
+                                  speciesId: dummyDics[index].dicId.toString(),
                                 ),
                               ),
                             ));

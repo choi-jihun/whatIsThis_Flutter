@@ -4,8 +4,8 @@ import 'package:whatisthis/cosntants/dummy_dictionary_info.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 
 class DictionaryInfoPage extends StatefulWidget {
-  final int dicId;
-  const DictionaryInfoPage({super.key, required this.dicId});
+  final String speciesId;
+  const DictionaryInfoPage({super.key, required this.speciesId});
 
   @override
   State<DictionaryInfoPage> createState() => _DictionaryInfoPageState();
@@ -17,7 +17,7 @@ class _DictionaryInfoPageState extends State<DictionaryInfoPage> {
   @override
   Widget build(BuildContext context) {
     final dicInfo =
-        dummyDictionaryInfos.firstWhere((dic) => dic.dicId == widget.dicId);
+        dummyDictionaryInfos.firstWhere((dic) => dic.dicId == widget.speciesId);
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(

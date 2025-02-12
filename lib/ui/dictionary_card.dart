@@ -1,12 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:whatisthis/model/dictionary.dart';
+import 'package:whatisthis/model/species.dart';
 import 'package:whatisthis/theme/app_theme.dart';
 
 class DictionaryCard extends StatelessWidget {
-  final Dictionary dictionary;
+  final Species species;
+  final bool isDiscovered;
   final VoidCallback? onTap;
-  const DictionaryCard({super.key, required this.dictionary, this.onTap});
+
+  const DictionaryCard(
+      {super.key,
+      required this.species,
+      this.isDiscovered = false,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,7 @@ class DictionaryCard extends StatelessWidget {
                 width: double.infinity,
                 height: double.infinity,
                 child: CachedNetworkImage(
-                  imageUrl: dictionary.imageUrl,
+                  imageUrl: species.imageUrl ?? '',
                   fit: BoxFit.cover,
                   placeholder: (context, url) =>
                       const CircularProgressIndicator(),
@@ -45,21 +51,17 @@ class DictionaryCard extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 8),
                   decoration: BoxDecoration(
-                      color: dictionary.isDiscover
+                      color: isDiscovered
                           ? AppTheme.lightTheme.colorScheme.primary
                               .withAlpha(120)
                           : Colors.black.withAlpha(120),
                       borderRadius:
                           BorderRadius.vertical(bottom: Radius.circular(12))),
                   child: Text(
-                    dictionary.isDiscover
-                        ? dictionary.dicName
-                        : "미발견 - ${dictionary.dicName}",
+                    isDiscovered ? species.name : "미발견 - ${species.name}",
                     textAlign: TextAlign.center,
                     style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
-                        color: dictionary.isDiscover
-                            ? Colors.black
-                            : Colors.white),
+                        color: isDiscovered ? Colors.black : Colors.white),
                   ),
                 )),
           ],
