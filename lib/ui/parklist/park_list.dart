@@ -25,28 +25,32 @@ class ParkList extends ConsumerWidget {
         ),
         elevation: 8,
       ),
-      body: switch (homeState) {
-        HomeInitial() ||
-        HomeLoading() =>
-          const Center(child: CircularProgressIndicator()),
-        HomeError(message: var message) => Center(child: Text(message)),
-        HomeSuccess(nearbyParks: var parks) => ListView.separated(
-            padding: const EdgeInsets.all(12),
-            shrinkWrap: true,
-            itemCount: parks.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              return ParkCard(
-                park: parks[index],
-                onTap: () => Navigator.push(
+      body: homeState.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text(error.toString())),
+        data: (state) {
+          if (state is HomeSuccess) {
+            return ListView.separated(
+              padding: const EdgeInsets.all(12),
+              shrinkWrap: true,
+              itemCount: state.nearbyParks.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              itemBuilder: (context, index) {
+                return ParkCard(
+                  park: state.nearbyParks[index],
+                  onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ParkInfo(parkId: parks[index].id))),
-              );
-            },
-          ),
-      },
+                            ParkInfo(parkId: state.nearbyParks[index].id)),
+                  ),
+                );
+              },
+            );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

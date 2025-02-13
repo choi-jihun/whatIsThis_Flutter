@@ -17,20 +17,12 @@ class _DictionaryPageState extends ConsumerState<DictionaryPage> {
   String selectedFilter = 'all';
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(dictionaryViewModelProvider.notifier).loadDictionaryData();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final state = ref.watch(dictionaryViewModelProvider);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
@@ -40,24 +32,44 @@ class _DictionaryPageState extends ConsumerState<DictionaryPage> {
                 children: [
                   Text('도감',
                       style: AppTheme.lightTheme.textTheme.headlineLarge),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "${(state is DictionarySuccess ? state.discoveryRate * 100 : 0).toStringAsFixed(1)}%",
-                        style: AppTheme.lightTheme.textTheme.bodyMedium,
-                      ),
-                    ],
+                  state.when(
+                    loading: () => const Text("..."),
+                    error: (error, stack) => const Text("0.0%"),
+                    data: (dictionaryState) => Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (dictionaryState is DictionarySuccess)
+                          Text(
+                            "${(dictionaryState.discoveryRate * 100).toStringAsFixed(1)}%",
+                            style: AppTheme.lightTheme.textTheme.bodyMedium,
+                          ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 4),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: LinearProgressIndicator(
-                      value:
-                          state is DictionarySuccess ? state.discoveryRate : 0,
-                      backgroundColor: Colors.grey.shade300,
-                      color: Colors.green,
-                      minHeight: 8,
+                    child: state.when(
+                      loading: () => LinearProgressIndicator(
+                        value: 0,
+                        backgroundColor: Colors.grey.shade300,
+                        color: Colors.green,
+                        minHeight: 8,
+                      ),
+                      error: (error, stack) => LinearProgressIndicator(
+                        value: 0,
+                        backgroundColor: Colors.grey.shade300,
+                        color: Colors.green,
+                        minHeight: 8,
+                      ),
+                      data: (dictionaryState) => LinearProgressIndicator(
+                        value: dictionaryState is DictionarySuccess
+                            ? dictionaryState.discoveryRate
+                            : 0,
+                        backgroundColor: Colors.grey.shade300,
+                        color: Colors.green,
+                        minHeight: 8,
+                      ),
                     ),
                   ),
                   SizedBox(height: 16),
@@ -136,30 +148,35 @@ class _DictionaryPageState extends ConsumerState<DictionaryPage> {
             SizedBox(height: 16),
             Expanded(
               child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: switch (state) {
-                    DictionaryLoading() =>
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: state.when(
+                  loading: () =>
                       const Center(child: CircularProgressIndicator()),
-                    DictionaryError(message: var message) =>
-                      Center(child: Text(message)),
-                    DictionarySuccess(
-                      species: var species,
-                      discoveredSpeciesIds: var discoveredIds
-                    ) =>
-                      DictionaryCardList(
+                  error: (error, stack) =>
+                      Center(child: Text(error.toString())),
+                  data: (dictionaryState) {
+                    if (dictionaryState is DictionarySuccess) {
+                      return DictionaryCardList(
                         species: switch (selectedFilter) {
-                          'discover' => species
-                              .where((s) => discoveredIds.contains(s.id))
+                          'discover' => dictionaryState.species
+                              .where((s) => dictionaryState.discoveredSpeciesIds
+                                  .contains(s.id))
                               .toList(),
-                          'undiscover' => species
-                              .where((s) => !discoveredIds.contains(s.id))
+                          'undiscover' => dictionaryState.species
+                              .where((s) => !dictionaryState
+                                  .discoveredSpeciesIds
+                                  .contains(s.id))
                               .toList(),
-                          _ => species,
+                          _ => dictionaryState.species,
                         },
-                        discoveredSpeciesIds: discoveredIds,
-                      ),
-                    _ => const SizedBox(),
-                  }),
+                        discoveredSpeciesIds:
+                            dictionaryState.discoveredSpeciesIds,
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+              ),
             ),
           ],
         ),
