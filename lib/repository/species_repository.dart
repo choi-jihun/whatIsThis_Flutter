@@ -5,4 +5,5 @@ abstract class SpeciesRepository {
   Future<List<Species>> getAllSpecies();
   Future<List<Species>> getDiscoveredSpecies(String userId);
   Future<List<Species>> getUndiscoveredSpecies(String userId);
+  Future<Species> getSpeciesDetail(String speciesId);
 }

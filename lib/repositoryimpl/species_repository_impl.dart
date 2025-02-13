@@ -82,4 +82,20 @@ class SpeciesRepositoryImpl implements SpeciesRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Species> getSpeciesDetail(String speciesId) async {
+    try {
+      final response = await _supabaseClient
+          .from('species')
+          .select()
+          .eq('species_id', speciesId)
+          .single();
+
+      return Species.fromJson(response);
+    } catch (e) {
+      print('Error getting species detail: $e');
+      rethrow;
+    }
+  }
 }
