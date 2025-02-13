@@ -1,41 +1,33 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:whatisthis/di/providers.dart';
-import 'package:whatisthis/repository/species_repository.dart';
 import 'package:whatisthis/state/dictionary_state.dart';
 
-final dictionaryViewModelProvider =
-    StateNotifierProvider<DictionaryViewModel, DictionaryState>((ref) {
-  return DictionaryViewModel(
-    ref.watch(speciesRepositoryProvider),
-    ref.watch(authRepositoryProvider).currentUser!.id,
-  );
-});
+part 'dictionary_view_model.g.dart';
 
-class DictionaryViewModel extends StateNotifier<DictionaryState> {
-  final SpeciesRepository _repository;
-  final String userId;
-
-  DictionaryViewModel(this._repository, this.userId)
-      : super(DictionaryInitial());
-
-  Future<void> loadDictionaryData() async {
-    state = DictionaryLoading();
+@riverpod
+class DictionaryViewModel extends AutoDisposeAsyncNotifier<DictionaryState> {
+  @override
+  Future<DictionaryState> build() async {
     try {
-      final allSpecies = await _repository.getAllSpecies();
-      final discoveredSpecies = await _repository.getDiscoveredSpecies(userId);
+      final userId = ref.read(authRepositoryProvider).currentUser!.id;
+      final allSpecies =
+          await ref.read(speciesRepositoryProvider).getAllSpecies();
+      final discoveredSpecies = await ref
+          .read(speciesRepositoryProvider)
+          .getDiscoveredSpecies(userId);
       final discoveredSpeciesIds = discoveredSpecies.map((s) => s.id).toList();
 
       final discoveryRate = allSpecies.isNotEmpty
           ? discoveredSpecies.length / allSpecies.length
           : 0.0;
 
-      state = DictionarySuccess(
+      return DictionarySuccess(
         species: allSpecies,
         discoveredSpeciesIds: discoveredSpeciesIds,
         discoveryRate: discoveryRate,
       );
     } catch (e) {
-      state = DictionaryError(e.toString());
+      return DictionaryError(e.toString());
     }
   }
 }

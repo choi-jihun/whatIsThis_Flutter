@@ -1,53 +1,43 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:whatisthis/di/providers.dart';
-import 'package:whatisthis/repository/park_repository.dart';
-import 'package:whatisthis/repository/species_repository.dart';
 import 'package:whatisthis/state/home_state.dart';
 import 'package:whatisthis/utils/check_permissions.dart';
 
-final homeViewModelProvider =
-    StateNotifierProvider<HomeViewModel, HomeState>((ref) {
-  return HomeViewModel(
-    ref.watch(parkRepositoryProvider),
-    ref.watch(speciesRepositoryProvider),
-  );
-});
+part 'home_view_model.g.dart';
 
-class HomeViewModel extends StateNotifier<HomeState> {
-  final ParkRepository _parkRepository;
-  final SpeciesRepository _speciesRepository;
-
-  HomeViewModel(this._parkRepository, this._speciesRepository)
-      : super(HomeInitial());
-
-  Future<void> loadHomeData() async {
-    state = HomeLoading();
+@riverpod
+class HomeViewModel extends AutoDisposeAsyncNotifier<HomeState> {
+  @override
+  Future<HomeState> build() async {
     try {
       final position = await LocationService.getCurrentPosition();
       if (position == null) {
-        state = HomeError('위치 권한이 필요합니다');
-        return;
+        return HomeError('위치 권한이 필요합니다');
       }
 
-      final popularParks = await _parkRepository.getPopularParks();
-      final nearbyParks = await _parkRepository.getNearbyParks(
-          position.latitude, position.longitude);
+      final popularParks =
+          await ref.read(parkRepositoryProvider).getPopularParks();
+      final nearbyParks = await ref
+          .read(parkRepositoryProvider)
+          .getNearbyParks(position.latitude, position.longitude);
 
       for (var park in nearbyParks) {
         park.distance = Geolocator.distanceBetween(position.latitude,
             position.longitude, park.latitude, park.longitude);
       }
-      final seasonalSpecies =
-          await _speciesRepository.getSeasonalSpecies("WINTER");
 
-      state = HomeSuccess(
+      final seasonalSpecies = await ref
+          .read(speciesRepositoryProvider)
+          .getSeasonalSpecies("WINTER");
+
+      return HomeSuccess(
         popularParks: popularParks,
         nearbyParks: nearbyParks,
         seasonalSpecies: seasonalSpecies,
       );
     } catch (e) {
-      state = HomeError(e.toString());
+      return HomeError(e.toString());
     }
   }
 }
